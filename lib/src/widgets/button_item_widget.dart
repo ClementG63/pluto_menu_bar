@@ -8,8 +8,11 @@ class ButtonItemWidget extends StatelessWidget {
     required this.moreIconColor,
     required this.menuIconSize,
     required this.textStyle,
+    required this.iconPosition,
     super.key,
   });
+
+  final AxisDirection iconPosition;
 
   final PlutoMenuItem menu;
 
@@ -27,7 +30,7 @@ class ButtonItemWidget extends StatelessWidget {
       key: menu.key,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        if (menu.icon != null) ...[
+        if (menu.icon != null && iconPosition == AxisDirection.left) ...[
           Icon(
             menu.icon,
             color: menuIconColor,
@@ -43,8 +46,15 @@ class ButtonItemWidget extends StatelessWidget {
             overflow: TextOverflow.visible,
           ),
         ),
-        if (menu.hasChildren && !menu.isBack)
-          Icon(Icons.arrow_right, color: moreIconColor),
+        if (menu.hasChildren && !menu.isBack) Icon(Icons.arrow_right, color: moreIconColor),
+        if (menu.icon != null && iconPosition == AxisDirection.left) ...[
+          Icon(
+            menu.icon,
+            color: menuIconColor,
+            size: menuIconSize,
+          ),
+          SizedBox(width: 5),
+        ],
       ],
     );
   }

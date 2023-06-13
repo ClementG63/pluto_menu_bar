@@ -17,8 +17,7 @@ class _MenuWidget extends StatefulWidget {
 
   final GlobalKey<State<StatefulWidget>>? selectedMenuKey;
 
-  final void Function(GlobalKey<State<StatefulWidget>>? key)?
-      setSelectedMenuKey;
+  final void Function(GlobalKey<State<StatefulWidget>>? key)? setSelectedMenuKey;
 
   _MenuWidget(
     this.menu, {
@@ -45,19 +44,14 @@ class _MenuWidgetState extends State<_MenuWidget> {
 
   bool get enabledSelectedTopMenu => widget.style.enableSelectedTopMenu;
 
-  bool get isSelectedMenu =>
-      enabledSelectedTopMenu && widget.selectedMenuKey == widget.menu.key;
+  bool get isSelectedMenu => enabledSelectedTopMenu && widget.selectedMenuKey == widget.menu.key;
 
   Color get iconColor {
-    return isSelectedMenu
-        ? widget.style.selectedTopMenuIconColor
-        : widget.style.iconColor;
+    return isSelectedMenu ? widget.style.selectedTopMenuIconColor : widget.style.iconColor;
   }
 
   TextStyle get textStyle {
-    return isSelectedMenu
-        ? widget.style.selectedTopMenuTextStyle
-        : widget.style.textStyle;
+    return isSelectedMenu ? widget.style.selectedTopMenuTextStyle : widget.style.textStyle;
   }
 
   @override
@@ -104,16 +98,14 @@ class _MenuWidgetState extends State<_MenuWidget> {
     if (_popups.containsKey(menu._key.toString())) return;
     if (!menu._hasContext) return;
 
-    final RenderBox overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
 
     const double itemMinWidth = 150.0;
     const double itemMinHeight = 43.0;
     final Offset menuPosition = menu._position - Offset(0, 1);
     final Size menuSize = menu._size;
     final bool rootMenu = menu._parent == null;
-    final Offset positionOffset =
-        rootMenu ? Offset(0, widget.height) : Offset(menuSize.width - 10, 10);
+    final Offset positionOffset = rootMenu ? Offset(0, widget.height) : Offset(menuSize.width - 10, 10);
 
     Offset position = menuPosition + positionOffset;
     double? top = position.dy;
@@ -166,6 +158,7 @@ class _MenuWidgetState extends State<_MenuWidget> {
             moreIconColor: widget.style.moreIconColor,
             menuIconSize: widget.style.iconSize,
             textStyle: widget.style.textStyle,
+            iconPosition: widget.style.iconPosition,
           );
 
           if (item.type.isDivider) return menuItemWidget;
@@ -259,6 +252,7 @@ class _MenuWidgetState extends State<_MenuWidget> {
 
     if (widget.mode.isTap && widget.showBackButton && !menu._isRootSubMenu) {
       final backButton = PlutoMenuItem._back(
+        AxisDirection.left,
         title: widget.goBackButtonText,
         children: items.first._parent?._parent?.children,
       );
@@ -266,11 +260,9 @@ class _MenuWidgetState extends State<_MenuWidget> {
       items.add(backButton);
     }
 
-    final RenderBox overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
 
-    final Offset position =
-        widget.menu._position + Offset(0, widget.height - 1);
+    final Offset position = widget.menu._position + Offset(0, widget.height - 1);
 
     showMenu(
       context: context,
@@ -291,6 +283,7 @@ class _MenuWidgetState extends State<_MenuWidget> {
           moreIconColor: widget.style.moreIconColor,
           menuIconSize: widget.style.iconSize,
           textStyle: widget.style.textStyle,
+          iconPosition: widget.style.iconPosition,
         );
 
         double height = kMinInteractiveDimension;
@@ -365,9 +358,7 @@ class _MenuWidgetState extends State<_MenuWidget> {
     if (widget.style.selectedTopMenuResolver != null) {
       resolved = widget.style.selectedTopMenuResolver!(
         widget.menu,
-        widget.selectedMenuKey == null
-            ? null
-            : widget.menu.key == widget.selectedMenuKey,
+        widget.selectedMenuKey == null ? null : widget.menu.key == widget.selectedMenuKey,
       );
     }
 
@@ -431,17 +422,17 @@ class _MenuWidgetState extends State<_MenuWidget> {
 }
 
 class _ItemWidget extends StatelessWidget {
-  const _ItemWidget({
-    required this.menu,
-    required this.iconScale,
-    required this.unselectedColor,
-    required this.activatedColor,
-    required this.indicatorColor,
-    required this.menuIconColor,
-    required this.moreIconColor,
-    required this.menuIconSize,
-    required this.textStyle,
-  });
+  const _ItemWidget(
+      {required this.menu,
+      required this.iconScale,
+      required this.unselectedColor,
+      required this.activatedColor,
+      required this.indicatorColor,
+      required this.menuIconColor,
+      required this.moreIconColor,
+      required this.menuIconSize,
+      required this.textStyle,
+      required this.iconPosition});
 
   final PlutoMenuItem menu;
 
@@ -461,6 +452,8 @@ class _ItemWidget extends StatelessWidget {
 
   final TextStyle textStyle;
 
+  final AxisDirection iconPosition;
+
   @override
   Widget build(BuildContext context) {
     switch (menu.type) {
@@ -471,6 +464,7 @@ class _ItemWidget extends StatelessWidget {
           moreIconColor: moreIconColor,
           menuIconSize: menuIconSize,
           textStyle: textStyle,
+          iconPosition: iconPosition,
         );
       case PlutoMenuItemType.checkbox:
         return CheckboxItemWidget(

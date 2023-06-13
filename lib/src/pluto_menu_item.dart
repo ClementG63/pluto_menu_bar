@@ -17,6 +17,8 @@ class PlutoMenuItem {
 
   final IconData? icon;
 
+  final AxisDirection iconPosition;
+
   final bool enable;
 
   /// Callback executed when a menu is tapped
@@ -26,15 +28,17 @@ class PlutoMenuItem {
   final List<PlutoMenuItem>? children;
 
   /// Button type menu item.
-  PlutoMenuItem({
-    /// {@macro pluto_menu_item_id}
-    this.id,
-    required this.title,
-    this.icon,
-    this.enable = true,
-    this.onTap,
-    this.children,
-  })  : _key = id == null ? GlobalKey() : GlobalObjectKey(id),
+  PlutoMenuItem(
+      {
+      /// {@macro pluto_menu_item_id}
+      this.id,
+      required this.title,
+      this.icon,
+      this.enable = true,
+      this.onTap,
+      this.children,
+      this.iconPosition = AxisDirection.left})
+      : _key = id == null ? GlobalKey() : GlobalObjectKey(id),
         _isBack = false {
     _setParent();
   }
@@ -128,7 +132,8 @@ class PlutoMenuItem {
     );
   }
 
-  PlutoMenuItem._back({
+  PlutoMenuItem._back(
+    this.iconPosition, {
     required this.title,
     this.children,
   })  : icon = null,

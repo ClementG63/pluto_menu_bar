@@ -155,6 +155,7 @@ class PlutoMenuItemStyle {
       color: Colors.black,
       fontSize: 14,
     ),
+    this.iconPosition = AxisDirection.right,
     this.enableSelectedTopMenu = false,
     this.initialSelectedTopMenuIndex = 0,
     this.selectedTopMenuIconColor = Colors.lightBlue,
@@ -164,6 +165,8 @@ class PlutoMenuItemStyle {
     ),
     this.selectedTopMenuResolver,
   });
+
+  final AxisDirection iconPosition;
 
   final Color iconColor;
 
