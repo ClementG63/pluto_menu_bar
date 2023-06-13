@@ -378,7 +378,7 @@ class _MenuWidgetState extends State<_MenuWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (widget.menu.icon != null) ...[
+          if (widget.menu.icon != null && widget.style.iconPosition == AxisDirection.left) ...[
             Icon(
               widget.menu.icon,
               color: iconColor,
@@ -387,6 +387,14 @@ class _MenuWidgetState extends State<_MenuWidget> {
             SizedBox(width: 5),
           ],
           Text(widget.menu.title, style: textStyle),
+          if (widget.menu.icon != null && widget.style.iconPosition == AxisDirection.right) ...[
+            SizedBox(width: 5),
+            Icon(
+              widget.menu.icon,
+              color: iconColor,
+              size: widget.style.iconSize,
+            ),
+          ],
         ],
       ),
     );
