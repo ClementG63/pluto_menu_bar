@@ -252,7 +252,7 @@ class _MenuWidgetState extends State<_MenuWidget> {
 
     if (widget.mode.isTap && widget.showBackButton && !menu._isRootSubMenu) {
       final backButton = PlutoMenuItem._back(
-        AxisDirection.left,
+        widget.style.iconPosition,
         title: widget.goBackButtonText,
         children: items.first._parent?._parent?.children,
       );
